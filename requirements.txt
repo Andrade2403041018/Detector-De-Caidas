@@ -1,0 +1,6 @@
+opencv-python==4.8.1.78
+numpy
+scikit-learn
+matplotlib
+playsound
+Pillow 
