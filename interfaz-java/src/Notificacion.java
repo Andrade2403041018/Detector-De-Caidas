@@ -1,5 +1,5 @@
 /**
- * Clase para representar una notificación en la base de datos
+ * Clase para representar una notificacion en la base de datos
  */
 public class Notificacion {
     private int id;

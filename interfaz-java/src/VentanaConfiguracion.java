@@ -46,7 +46,7 @@ public class VentanaConfiguracion extends JFrame {
         
         // Panel de umbral
         JPanel panelUmbral = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        panelUmbral.add(new JLabel("Umbral de ángulo (°): "));
+        panelUmbral.add(new JLabel("Umbral de angulo (grados): "));
         spinnerUmbral = new JSpinner(new SpinnerNumberModel(45, 10, 90, 5));
         panelUmbral.add(spinnerUmbral);
         panel.add(panelUmbral);
@@ -87,6 +87,6 @@ public class VentanaConfiguracion extends JFrame {
         if (panelPrincipal != null) {
             panelPrincipal.actualizarConfiguracion();
         }
-        JOptionPane.showMessageDialog(this, "Configuración guardada correctamente.", "Info", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Configuracion guardada correctamente.", "Info", JOptionPane.INFORMATION_MESSAGE);
     }
 } 

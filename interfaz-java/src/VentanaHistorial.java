@@ -5,7 +5,7 @@ import java.io.*;
 import java.util.List;
 
 /**
- * Ventana para mostrar el historial de eventos de caídas
+ * Ventana para mostrar el historial de eventos de caidas
  */
 public class VentanaHistorial extends JFrame {
     
@@ -15,6 +15,10 @@ public class VentanaHistorial extends JFrame {
     private JLabel labelTotal;
     private JButton botonExportar;
     private JButton botonActualizar;
+    private JPanel panelPrincipal;
+    private JPanel panelInfo;
+    private JScrollPane scrollPane;
+    private JPanel panelControles;
     
     public VentanaHistorial(List<Evento> eventos) {
         this.eventos = eventos;
@@ -29,31 +33,32 @@ public class VentanaHistorial extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
         // Panel principal
-        JPanel panelPrincipal = new JPanel(new BorderLayout());
+        panelPrincipal = new JPanel(new BorderLayout());
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         // Panel superior - Informacion
         crearPanelInformacion();
+        panelPrincipal.add(panelInfo, BorderLayout.NORTH);
         
         // Panel central - Tabla
         crearPanelTabla();
+        panelPrincipal.add(scrollPane, BorderLayout.CENTER);
         
         // Panel inferior - Controles
         crearPanelControles();
+        panelPrincipal.add(panelControles, BorderLayout.SOUTH);
         
-        add(panelPrincipal);
+        setContentPane(panelPrincipal);
     }
     
     private void crearPanelInformacion() {
-        JPanel panelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelInfo = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panelInfo.setBorder(BorderFactory.createTitledBorder("Informacion"));
         
         labelTotal = new JLabel("Total de eventos: " + eventos.size());
         labelTotal.setFont(new Font("Arial", Font.BOLD, 14));
         
         panelInfo.add(labelTotal);
-        
-        add(panelInfo, BorderLayout.NORTH);
     }
     
     private void crearPanelTabla() {
@@ -76,14 +81,14 @@ public class VentanaHistorial extends JFrame {
         tablaEventos.setRowHeight(25);
         
         // Scroll pane
-        JScrollPane scrollPane = new JScrollPane(tablaEventos);
+        scrollPane = new JScrollPane(tablaEventos);
         scrollPane.setBorder(BorderFactory.createTitledBorder("Eventos Registrados"));
-        
-        add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setPreferredSize(new Dimension(750, 400)); // Asegura buen tamaño
+        scrollPane.setMinimumSize(new Dimension(400, 200));
     }
     
     private void crearPanelControles() {
-        JPanel panelControles = new JPanel(new FlowLayout());
+        panelControles = new JPanel(new FlowLayout());
         panelControles.setBorder(BorderFactory.createTitledBorder("Controles"));
         
         // Botón Actualizar
@@ -119,8 +124,6 @@ public class VentanaHistorial extends JFrame {
         panelControles.add(botonActualizar);
         panelControles.add(botonExportar);
         panelControles.add(botonCerrar);
-        
-        add(panelControles, BorderLayout.SOUTH);
     }
     
     private void cargarDatos() {

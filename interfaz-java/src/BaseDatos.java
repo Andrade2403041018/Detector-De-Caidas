@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.*;
 
 /**
- * Clase para manejar la base de datos SQLite de eventos de caídas
+ * Clase para manejar la base de datos SQLite de eventos de caidas
  */
 public class BaseDatos {
     private Connection conexion;
@@ -103,7 +103,7 @@ public class BaseDatos {
                 return new Evento(id, tipo, angulo, timestamp);
             }
         } catch (SQLException e) {
-            System.err.println("Error al obtener último evento: " + e.getMessage());
+            System.err.println("Error al obtener ultimo evento: " + e.getMessage());
         }
         return null;
     }
@@ -135,7 +135,7 @@ public class BaseDatos {
             pstmt.setString(6, timestamp);
             pstmt.executeUpdate();
         } catch (SQLException e) {
-            System.err.println("Error al guardar notificación: " + e.getMessage());
+            System.err.println("Error al guardar notificacion: " + e.getMessage());
         }
     }
     

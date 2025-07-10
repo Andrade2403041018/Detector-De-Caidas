@@ -57,10 +57,10 @@ public class NotificadorEmailJava {
                     }
                     System.out.println("Respuesta de error Mailjet: " + result.toString("UTF-8"));
                 }
-                System.out.println("Error al enviar correo. Revisa la consola para más detalles.");
+                System.out.println("Error al enviar correo. Revisa la consola para mas detalles.");
                 return false;
             } else {
-                System.out.println("¡Correo enviado correctamente!");
+                System.out.println("Correo enviado correctamente!");
                 return true;
             }
         } catch (Exception e) {

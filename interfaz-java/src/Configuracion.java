@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.Properties;
 
 /**
- * Clase para manejar la configuración del sistema
+ * Clase para manejar la configuracion del sistema
  */
 public class Configuracion {
     private Properties propiedades;
@@ -21,11 +21,11 @@ public class Configuracion {
                 propiedades.load(fis);
                 fis.close();
             } else {
-                // Crear configuración por defecto
+                // Crear configuracion por defecto
                 crearConfiguracionPorDefecto();
             }
         } catch (IOException e) {
-            System.err.println("Error al cargar configuración: " + e.getMessage());
+            System.err.println("Error al cargar configuracion: " + e.getMessage());
             crearConfiguracionPorDefecto();
         }
     }
@@ -43,10 +43,10 @@ public class Configuracion {
     public void guardarConfiguracion() {
         try {
             FileOutputStream fos = new FileOutputStream(archivoConfig);
-            propiedades.store(fos, "Configuración del Sistema de Detección de Caídas");
+            propiedades.store(fos, "Configuracion del Sistema de Deteccion de Caidas");
             fos.close();
         } catch (IOException e) {
-            System.err.println("Error al guardar configuración: " + e.getMessage());
+            System.err.println("Error al guardar configuracion: " + e.getMessage());
         }
     }
     
@@ -64,7 +64,12 @@ public class Configuracion {
     }
     
     public String getEmailDestinatario() {
-        return propiedades.getProperty("email_destinatario", "");
+        // Prioriza el guion bajo, pero acepta el punto por compatibilidad
+        String valor = propiedades.getProperty("email_destinatario", "");
+        if (valor.isEmpty()) {
+            valor = propiedades.getProperty("email.destinatario", "");
+        }
+        return valor;
     }
     
     public String getApiKeyMailjet() {
@@ -90,6 +95,7 @@ public class Configuracion {
     
     public void setEmailDestinatario(String email) {
         propiedades.setProperty("email_destinatario", email);
+        propiedades.setProperty("email.destinatario", email); // Guarda en ambos formatos
     }
     
     public void setApiKeyMailjet(String apiKey) {

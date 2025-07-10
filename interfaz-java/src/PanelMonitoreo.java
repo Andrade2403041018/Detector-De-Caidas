@@ -10,9 +10,10 @@ import java.util.*;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.time.Duration;
 
 /**
- * Panel de Monitoreo para Sistema de Detección de Caídas
+ * Panel de Monitoreo para Sistema de Deteccion de Caidas
  * Fase 3: Interfaz Java con Base de Datos
  */
 public class PanelMonitoreo extends JFrame {
@@ -43,6 +44,7 @@ public class PanelMonitoreo extends JFrame {
     
     private int ultimoIdEvento = -1;
     private Timer timerMonitoreo;
+    private int ultimoIdEventoNotificado = -1; // Nueva variable para controlar notificaciones
     
     private LocalDateTime horaInicioSistema;
     
@@ -56,25 +58,27 @@ public class PanelMonitoreo extends JFrame {
     
     private void inicializarInterfaz() {
         setTitle("Sistema de Deteccion de Caidas - Panel de Monitoreo");
-        setSize(800, 600);
+        setSize(800, 850); // Más alto para dar más espacio abajo
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         
-        // Panel principal
+        // Panel principal con BoxLayout vertical
         panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new BorderLayout());
+        panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         // Panel superior - Estado del sistema
         crearPanelEstado();
+        panelPrincipal.add(Box.createVerticalStrut(10));
         
         // Panel central - Logs en tiempo real
         crearPanelLogs();
+        panelPrincipal.add(Box.createVerticalStrut(10));
         
         // Panel inferior - Controles
         crearPanelControles();
         
-        add(panelPrincipal);
+        setContentPane(panelPrincipal);
     }
     
     private void crearPanelEstado() {
@@ -115,7 +119,7 @@ public class PanelMonitoreo extends JFrame {
         panelEstado.add(labelEmail);
         panelEstado.add(labelDB);
         
-        panelPrincipal.add(panelEstado, BorderLayout.NORTH);
+        panelPrincipal.add(panelEstado);
     }
     
     private void crearPanelLogs() {
@@ -140,58 +144,45 @@ public class PanelMonitoreo extends JFrame {
         areaLogs.setForeground(Color.GREEN);
         
         JScrollPane scrollPane = new JScrollPane(areaLogs);
+        scrollPane.setPreferredSize(new Dimension(750, 350));
         panelLogs.add(scrollPane, BorderLayout.CENTER);
+        panelLogs.setMaximumSize(new Dimension(Integer.MAX_VALUE, 400));
         
-        panelPrincipal.add(panelLogs, BorderLayout.CENTER);
+        panelPrincipal.add(panelLogs);
     }
     
     private void crearPanelControles() {
         JPanel panelControles = new JPanel();
-        panelControles.setLayout(new FlowLayout());
+        panelControles.setLayout(new GridLayout(1, 6, 10, 0)); // 1 fila, 6 columnas, espacio horizontal de 10
         panelControles.setBorder(BorderFactory.createTitledBorder("Controles"));
-        
-        // Boton Iniciar
-        botonIniciar = new JButton("Iniciar Sistema");
-        botonIniciar.setBackground(new Color(60, 60, 60)); // Gris oscuro sólido
-        botonIniciar.setForeground(Color.BLACK);
-        botonIniciar.setFont(botonIniciar.getFont().deriveFont(Font.BOLD));
-        botonIniciar.addActionListener(e -> iniciarSistema());
-        
-        // Boton Detener
-        botonDetener = new JButton("Detener Sistema");
-        botonDetener.setBackground(new Color(60, 60, 60)); // Gris oscuro sólido
-        botonDetener.setForeground(Color.BLACK);
-        botonDetener.setFont(botonDetener.getFont().deriveFont(Font.BOLD));
-        botonDetener.setEnabled(false);
-        botonDetener.addActionListener(e -> detenerSistema());
-        
-        // Boton Configurar
-        botonConfigurar = new JButton("Configuracion");
-        botonConfigurar.setBackground(new Color(60, 60, 60)); // Gris oscuro sólido
-        botonConfigurar.setForeground(Color.BLACK);
-        botonConfigurar.setFont(botonConfigurar.getFont().deriveFont(Font.BOLD));
-        botonConfigurar.addActionListener(e -> abrirConfiguracion());
-        
-        // Boton Ver Logs
-        botonVerLogs = new JButton("Ver Historial");
-        botonVerLogs.setBackground(new Color(60, 60, 60)); // Gris oscuro sólido
-        botonVerLogs.setForeground(Color.BLACK);
-        botonVerLogs.setFont(botonVerLogs.getFont().deriveFont(Font.BOLD));
-        botonVerLogs.addActionListener(e -> mostrarHistorial());
-        
-        // Boton Enviar Notificacion
-        botonEnviarNotificacion = new JButton("Enviar Notificacion");
-        botonEnviarNotificacion.setBackground(new Color(60, 60, 60)); // Gris oscuro sólido
-        botonEnviarNotificacion.setForeground(Color.BLACK);
-        botonEnviarNotificacion.setFont(botonEnviarNotificacion.getFont().deriveFont(Font.BOLD));
-        botonEnviarNotificacion.addActionListener(e -> enviarNotificacionPrueba());
+        panelControles.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120)); // Más alto
         
         // Boton Ver Notificaciones
-        botonVerNotificaciones = new JButton("📧 Ver Notificaciones");
-        botonVerNotificaciones.setBackground(new Color(60, 60, 60)); // Gris oscuro sólido
+        botonVerNotificaciones = new JButton("Notificaciones");
+        botonVerNotificaciones.setBackground(new Color(60, 60, 60));
         botonVerNotificaciones.setForeground(Color.BLACK);
-        botonVerNotificaciones.setFont(botonVerNotificaciones.getFont().deriveFont(Font.BOLD));
+        botonVerNotificaciones.setFont(botonVerNotificaciones.getFont().deriveFont(Font.BOLD, 12f));
         botonVerNotificaciones.addActionListener(e -> mostrarNotificaciones());
+        
+        botonIniciar = new JButton("Iniciar Sistema");
+        botonIniciar.setFont(botonIniciar.getFont().deriveFont(Font.BOLD, 12f));
+        botonIniciar.addActionListener(e -> iniciarSistema());
+        
+        botonDetener = new JButton("Detener Sistema");
+        botonDetener.setFont(botonDetener.getFont().deriveFont(Font.BOLD, 12f));
+        botonDetener.addActionListener(e -> detenerSistema());
+        
+        botonConfigurar = new JButton("Configurar");
+        botonConfigurar.setFont(botonConfigurar.getFont().deriveFont(Font.BOLD, 12f));
+        botonConfigurar.addActionListener(e -> abrirConfiguracion());
+        
+        botonVerLogs = new JButton("Ver Logs");
+        botonVerLogs.setFont(botonVerLogs.getFont().deriveFont(Font.BOLD, 12f));
+        botonVerLogs.addActionListener(e -> mostrarHistorial());
+        
+        botonEnviarNotificacion = new JButton("Enviar Notificacion");
+        botonEnviarNotificacion.setFont(botonEnviarNotificacion.getFont().deriveFont(Font.BOLD, 12f));
+        botonEnviarNotificacion.addActionListener(e -> enviarNotificacionPrueba());
         
         panelControles.add(botonIniciar);
         panelControles.add(botonDetener);
@@ -199,8 +190,7 @@ public class PanelMonitoreo extends JFrame {
         panelControles.add(botonVerLogs);
         panelControles.add(botonEnviarNotificacion);
         panelControles.add(botonVerNotificaciones);
-        
-        panelPrincipal.add(panelControles, BorderLayout.SOUTH);
+        panelPrincipal.add(panelControles);
     }
     
     private void iniciarSistema() {
@@ -209,6 +199,9 @@ public class PanelMonitoreo extends JFrame {
         labelEstado.setForeground(Color.GREEN);
         botonIniciar.setEnabled(false);
         botonDetener.setEnabled(true);
+        
+        // Resetear contador de eventos notificados al iniciar
+        ultimoIdEventoNotificado = ultimoIdEvento;
         
         agregarLog("Sistema iniciado - " + obtenerTimestamp());
         
@@ -239,10 +232,17 @@ public class PanelMonitoreo extends JFrame {
     private void monitorearEventosReales() {
         Evento ultimoEvento = baseDatos.obtenerUltimoEvento();
         if (ultimoEvento != null && ultimoEvento.getId() != ultimoIdEvento) {
-            // Filtrar por hora de inicio
             LocalDateTime fechaEvento = LocalDateTime.parse(ultimoEvento.getTimestamp(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            LocalDateTime ahora = LocalDateTime.now();
+            // Filtrar eventos antiguos, futuros o fuera de rango razonable
             if (fechaEvento.isBefore(horaInicioSistema)) {
-                return; // Ignorar eventos antiguos
+                return; // Ignorar eventos antes de iniciar el sistema
+            }
+            if (fechaEvento.isAfter(ahora)) {
+                return; // Ignorar eventos con fecha futura
+            }
+            if (Duration.between(fechaEvento, ahora).toMinutes() > 2) {
+                return; // Ignorar eventos viejos (mas de 2 minutos)
             }
             ultimoIdEvento = ultimoEvento.getId();
             SwingUtilities.invokeLater(() -> {
@@ -255,30 +255,48 @@ public class PanelMonitoreo extends JFrame {
     }
     
     private void enviarNotificacionAutomatica(Evento evento) {
+        // Verificar si ya se notificó este evento
+        if (evento.getId() <= ultimoIdEventoNotificado) {
+            return; // Ya se notificó este evento
+        }
+        
         // Filtrar por hora de inicio
         LocalDateTime fechaEvento = LocalDateTime.parse(evento.getTimestamp(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         if (fechaEvento.isBefore(horaInicioSistema)) {
             return; // Ignorar eventos antiguos
         }
-        agregarLog("Enviando notificacion de caida real...");
-
+        
+        // Refresca el destinatario desde la configuración antes de enviar
+        String destinatario = config.getEmailDestinatario();
         String remitente = config.getEmailRemitente();
         String password = config.getEmailPassword();
-        String destinatario = config.getEmailDestinatario();
         String smtpServer = config.getSmtpServer();
         int smtpPort = config.getSmtpPort();
-
         String asunto = "Alerta de Caida - Sistema de Deteccion";
         String cuerpo = "Se ha detectado una caida real en el sistema a las " + evento.getTimestamp() +
                         "\nTipo: " + evento.getTipo() +
                         "\nAngulo: " + String.format("%.1f", evento.getAngulo()) + "°";
-
+        agregarLog("Enviando notificacion de caida real a: " + destinatario);
         boolean enviado = NotificadorEmailJava.enviar(remitente, password, destinatario, smtpServer, smtpPort, asunto, cuerpo);
-
+        
+        // Marcar este evento como notificado
+        ultimoIdEventoNotificado = evento.getId();
+        
+        // Guardar evento en la base de datos
+        baseDatos.guardarEvento(evento.getTipo(), evento.getAngulo(), evento.getTimestamp());
+        // Guardar notificación en la base de datos
+        baseDatos.guardarNotificacion(
+            evento.getTipo(),
+            "Notificacion automatica enviada", // razon
+            evento.getAngulo(),
+            enviado,
+            destinatario,
+            evento.getTimestamp()
+        );
         if (enviado) {
-            agregarLog("Notificacion enviada correctamente - " + obtenerTimestamp());
+            agregarLog("Notificacion enviada correctamente a: " + destinatario + " - " + obtenerTimestamp());
         } else {
-            agregarLog("Error al enviar notificacion - " + obtenerTimestamp());
+            agregarLog("Error al enviar notificacion a: " + destinatario + " - " + obtenerTimestamp());
         }
     }
     
@@ -342,7 +360,7 @@ public class PanelMonitoreo extends JFrame {
             return;
         }
         int opcion = JOptionPane.showConfirmDialog(this,
-            "¿Desea enviar una notificacion de prueba por email usando el ultimo evento real?",
+            "Desea enviar una notificacion de prueba por email usando el ultimo evento real?",
             "Enviar Notificacion de Prueba",
             JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {

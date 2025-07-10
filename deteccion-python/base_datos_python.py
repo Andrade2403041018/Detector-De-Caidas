@@ -14,6 +14,12 @@ class BaseDatosPython:
     def conectar(self):
         """Conecta a la base de datos SQLite"""
         try:
+            # Crear el directorio si no existe
+            db_dir = os.path.dirname(self.db_path)
+            if db_dir and not os.path.exists(db_dir):
+                os.makedirs(db_dir)
+                print(f"📁 Directorio creado: {db_dir}")
+            
             # Verificar si el archivo existe
             if not os.path.exists(self.db_path):
                 print(f"⚠️ Base de datos no encontrada en: {self.db_path}")

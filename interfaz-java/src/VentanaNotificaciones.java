@@ -34,7 +34,7 @@ public class VentanaNotificaciones extends JFrame {
         JPanel panelPrincipal = new JPanel(new BorderLayout(10, 10));
         panelPrincipal.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        // Panel superior con información
+        // Panel superior con informacion
         JPanel panelSuperior = new JPanel(new FlowLayout(FlowLayout.LEFT));
         lblContador = new JLabel("Total de notificaciones: 0");
         lblContador.setFont(new Font("Arial", Font.BOLD, 14));
@@ -91,9 +91,9 @@ public class VentanaNotificaciones extends JFrame {
         JScrollPane scrollPane = new JScrollPane(tablaNotificaciones);
         scrollPane.setPreferredSize(new Dimension(850, 400));
         
-        // Panel inferior con información
+        // Panel inferior con informacion
         JPanel panelInferior = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel lblInfo = new JLabel("Las notificaciones se actualizan automáticamente cada 5 segundos");
+        JLabel lblInfo = new JLabel("Las notificaciones se actualizan automaticamente cada 5 segundos");
         lblInfo.setForeground(Color.GRAY);
         panelInferior.add(lblInfo);
         
@@ -147,8 +147,8 @@ public class VentanaNotificaciones extends JFrame {
         // Aquí se implementaría la limpieza de la base de datos
         // Por ahora solo mostramos un mensaje
         JOptionPane.showMessageDialog(this, 
-            "Función de limpieza implementada en la base de datos", 
-            "Información", 
+            "Funcion de limpieza implementada en la base de datos", 
+            "Informacion", 
             JOptionPane.INFORMATION_MESSAGE);
     }
     

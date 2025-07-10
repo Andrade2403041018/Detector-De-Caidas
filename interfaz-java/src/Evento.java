@@ -1,5 +1,5 @@
 /**
- * Clase para representar un evento de caída en el sistema
+ * Clase para representar un evento de caida en el sistema
  */
 public class Evento {
     private int id;
@@ -55,14 +55,14 @@ public class Evento {
     }
 
     /**
-     * Obtiene una representación formateada para mostrar en la interfaz
+     * Obtiene una representacion formateada para mostrar en la interfaz
      */
     public String getFormatoInterfaz() {
         return String.format("ALERTA %s | Angulo: %.1f° | %s", tipo, angulo, timestamp);
     }
 
     /**
-     * Obtiene una representación para exportar a CSV
+     * Obtiene una representacion para exportar a CSV
      */
     public String getFormatoCSV() {
         return String.format("%d,%s,%.1f,%s", id, tipo, angulo, timestamp);
